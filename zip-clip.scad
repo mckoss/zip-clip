@@ -5,7 +5,7 @@
 
 use <write.scad>
 
-VERSION = "0.2";
+VERSION = "0.3";
 
 // Epsilon - to ensure walls not coincident
 E = 0.01;
@@ -31,15 +31,14 @@ module zip_clip(length,
     translate([-E, -zipper_width / 2, lip])
       cube([length + 2 * E, zipper_width, inner_height - lip]);
 
-/*
-    translate([0, inner_width / 2 - E, lip])
-      ridges(width=guage, depth=guage + E, height=inner_height - lip, pitch=pitch, length=length);
-
-    mirror([0, 1, 0])
-      translate([pitch / 2, inner_width / 2 - E, lip])
-        grooves(width=guage, depth=guage + E, height=inner_height - lip, pitch=pitch, length=length);
-*/
   }
+
+  translate([0, zipper_width / 2 + E, lip])
+    ridges(width=guage, depth=guage / 3, height=inner_height - lip, pitch=pitch, length=length);
+
+  mirror([0, 1, 0])
+    translate([pitch / 2, zipper_width / 2 + E, lip])
+      ridges(width=guage, depth=guage / 3, height=inner_height - lip, pitch=pitch, length=length);
 
   translate([2, -zipper_width / 2, outer_height])
     write(str(type, VERSION), h=zipper_width / 2, t=0.5);
@@ -74,11 +73,9 @@ module ridges(width,
               height,
               pitch,
               length) {
-  extra = 1;
-  steps = ceil(length / pitch) + extra;
-  translate([-extra * pitch, 0, 0])
-    step_pitch(steps=steps, pitch=pitch)
-      ridge(width=width, depth=depth, height=height);
+  steps = ceil(length / pitch);
+  step_pitch(steps=steps - 2, pitch=pitch)
+    ridge(width=width, depth=depth, height=height);
 }
 
 module ridge(width,
@@ -150,5 +147,5 @@ module ribbon(length=20) {
 
 //luggage();
 //dryer();
-//backpack();
-ribbon();
+backpack();
+//ribbon();
