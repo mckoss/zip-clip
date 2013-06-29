@@ -109,7 +109,7 @@ module backpack(length=20) {
            zipper_width=7.13,
            guage=1.00,
            pitch=1.70,
-           lip=0.25,
+           lip=0.50,
            type="B");
 }
 
