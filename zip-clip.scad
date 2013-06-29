@@ -11,8 +11,10 @@ module zip_clip(length,
                 outer_height,
                 inner_height,
                 zipper_width,
-                groove_depth) {
-  inner_width = zipper_width - 2 * groove_depth;
+                guage,
+                pitch,
+                lip) {
+  inner_width = zipper_width - 2 * guage;
 
   difference() {
     translate([0, -outer_width / 2, 0])
@@ -20,6 +22,13 @@ module zip_clip(length,
 
     translate([-E, -inner_width / 2, -E])
       cube([length + 2 * E, inner_width, inner_height + E]);
+
+    translate([0, inner_width / 2 - E, lip])
+      grooves(width=guage, depth=guage + E, height=inner_height - lip, pitch=pitch, length=length);
+
+    mirror([0, 1, 0])
+      translate([pitch / 2, inner_width / 2 - E, lip])
+        grooves(width=guage, depth=guage + E, height=inner_height - lip, pitch=pitch, length=length);
   }
 }
 
@@ -59,8 +68,6 @@ zip_clip(length=20,
          outer_height=3.0,
          inner_height=1.5,
          zipper_width=6.92,
-         groove_depth=0.5);
-
-
-
-grooves(width=10, depth=10, height=50, pitch=15, length=150);
+         guage=1.00,
+         pitch=1.68,
+         lip=0.25);
