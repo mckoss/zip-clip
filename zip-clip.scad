@@ -63,11 +63,39 @@ module step_pitch(steps, pitch) {
   }
 }
 
-zip_clip(length=20,
-         outer_width=10.0,
-         outer_height=3.0,
-         inner_height=1.5,
-         zipper_width=6.92,
-         guage=1.00,
-         pitch=1.68,
-         lip=0.25);
+module luggage(length=15) {
+  zip_clip(length=length,
+           outer_width=9.0,
+           outer_height=2.0,
+           inner_height=1.5,
+           zipper_width=6.92,
+           guage=1.00,
+           pitch=1.68,
+           lip=0.25);
+}
+
+module dryer(length=15) {
+  zip_clip(length=length,
+           outer_width=8.0,
+           outer_height=2.0,
+           inner_height=1.62,
+           zipper_width=5.86,
+           guage=0.97,
+           pitch=1.57,
+           lip=0.25);
+}
+
+module backpack(length=15) {
+  zip_clip(length=length,
+           outer_width=9.0,
+           outer_height=3.70,
+           inner_height=2.70,
+           zipper_width=7.13,
+           guage=1.00,
+           pitch=1.70,
+           lip=0.25);
+}
+
+//luggage();
+//dryer();
+backpack();
