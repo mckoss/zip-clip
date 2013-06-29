@@ -31,10 +31,9 @@ module zip_clip(length,
     translate([-E, -zipper_width / 2, lip])
       cube([length + 2 * E, zipper_width, inner_height - lip]);
 
-
 /*
     translate([0, inner_width / 2 - E, lip])
-      grooves(width=guage, depth=guage + E, height=inner_height - lip, pitch=pitch, length=length);
+      ridges(width=guage, depth=guage + E, height=inner_height - lip, pitch=pitch, length=length);
 
     mirror([0, 1, 0])
       translate([pitch / 2, inner_width / 2 - E, lip])
@@ -68,6 +67,30 @@ module groove(width,
                ])
   linear_extrude(height=height)
     polygon(points=[ [0, 0], [width, 0], [width / 2, depth] ]);
+}
+
+module ridges(width,
+              depth,
+              height,
+              pitch,
+              length) {
+  extra = 1;
+  steps = ceil(length / pitch) + extra;
+  translate([-extra * pitch, 0, 0])
+    step_pitch(steps=steps, pitch=pitch)
+      ridge(width=width, depth=depth, height=height);
+}
+
+module ridge(width,
+              depth,
+              height) {
+  multmatrix(m=[ [1, 0, 1, 0],
+                 [0, 1, 0, 0],
+                 [0, 0, 1, 0],
+                 [0, 0, 0, 1]
+               ])
+  linear_extrude(height=height)
+    polygon(points=[ [0, 0], [width, 0], [width / 2, -depth] ]);
 }
 
 module step_pitch(steps, pitch) {
@@ -113,6 +136,19 @@ module backpack(length=20) {
            type="B");
 }
 
+module ribbon(length=20) {
+  zip_clip(length=length,
+           outer_width=7.5,
+           outer_height=3.70,
+           inner_height=2.70,
+           zipper_width=5.88,
+           guage=1.0,
+           pitch=3.56,
+           lip=0.50,
+           type="R");
+}
+
 //luggage();
 //dryer();
-backpack();
+//backpack();
+ribbon();
