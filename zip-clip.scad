@@ -5,7 +5,7 @@
 
 use <write.scad>
 
-VERSION = "0.1";
+VERSION = "0.2";
 
 // Epsilon - to ensure walls not coincident
 E = 0.01;
@@ -19,7 +19,7 @@ module zip_clip(length,
                 pitch,
                 lip,
                 type="") {
-  inner_width = zipper_width - 2 * guage;
+  inner_width = zipper_width - guage;
 
   difference() {
     translate([0, -outer_width / 2, 0])
@@ -28,12 +28,18 @@ module zip_clip(length,
     translate([-E, -inner_width / 2, -E])
       cube([length + 2 * E, inner_width, inner_height + E]);
 
+    translate([-E, -zipper_width / 2, lip])
+      cube([length + 2 * E, zipper_width, inner_height - lip]);
+
+
+/*
     translate([0, inner_width / 2 - E, lip])
       grooves(width=guage, depth=guage + E, height=inner_height - lip, pitch=pitch, length=length);
 
     mirror([0, 1, 0])
       translate([pitch / 2, inner_width / 2 - E, lip])
         grooves(width=guage, depth=guage + E, height=inner_height - lip, pitch=pitch, length=length);
+*/
   }
 
   translate([2, -zipper_width / 2, outer_height])
@@ -95,7 +101,7 @@ module dryer(length=15) {
            type="D");
 }
 
-module backpack(length=15) {
+module backpack(length=20) {
   zip_clip(length=length,
            outer_width=9.0,
            outer_height=3.70,
