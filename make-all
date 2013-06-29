@@ -1,0 +1,1 @@
+openscad -o zip-clip.stl zip-clip.scad
