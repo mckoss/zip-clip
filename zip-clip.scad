@@ -5,7 +5,7 @@
 
 use <write.scad>
 
-VERSION = "0.3";
+VERSION = "0.4";
 
 // Epsilon - to ensure walls not coincident
 E = 0.01;
@@ -18,7 +18,8 @@ module zip_clip(length,
                 guage,
                 pitch,
                 lip,
-                type="") {
+                type="",
+                add_tang=false) {
   inner_width = zipper_width - guage;
 
   difference() {
@@ -33,6 +34,11 @@ module zip_clip(length,
 
   }
 
+  if (add_tang == true) {
+    translate([-length / 2 + E, 0, inner_height])
+    tang(width=outer_width, length=length / 2, height=outer_height - inner_height);
+  }
+
   translate([0, zipper_width / 2 + E, lip])
     ridges(width=guage, depth=guage / 3, height=inner_height - lip, pitch=pitch, length=length);
 
@@ -42,6 +48,17 @@ module zip_clip(length,
 
   translate([2, -zipper_width / 2, outer_height])
     write(str(type, VERSION), h=zipper_width / 2, t=0.5);
+}
+
+module tang(width, length, height) {
+  translate([0, -width / 2, 0])
+  difference() {
+      cube([length, width, height]);
+      translate([1, 1, -E])
+        cube([length - 4, width - 2, height + 2 * E]);
+      translate([-E, width - 2, -E])
+        cube([1 + 2 * E, 1 + 2 * E, 1 + 2 * E]);
+  }
 }
 
 module grooves(width,
@@ -133,19 +150,21 @@ module backpack(length=20) {
            type="B");
 }
 
-module ribbon(length=20) {
+module ribbon(length=15) {
   zip_clip(length=length,
-           outer_width=7.5,
-           outer_height=3.70,
-           inner_height=2.70,
-           zipper_width=5.88,
+           outer_width=7.68,
+           outer_height=2.80,
+           inner_height=1.8,
+           zipper_width=5.68,
            guage=1.0,
-           pitch=3.56,
+           pitch=2.2,
            lip=0.50,
+           add_tang=true,
            type="R");
 }
 
 //luggage();
 //dryer();
-backpack();
-//ribbon();
+//backpack();
+ribbon();
+//tang(width=10, length=20, height=2);
