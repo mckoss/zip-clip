@@ -3,6 +3,10 @@
 // Startup Weekend Maker Edition - Seattle
 // June 29, 2013
 
+use <write.scad>
+
+VERSION = "0.1";
+
 // Epsilon - to ensure walls not coincident
 E = 0.01;
 
@@ -13,7 +17,8 @@ module zip_clip(length,
                 zipper_width,
                 guage,
                 pitch,
-                lip) {
+                lip,
+                type="") {
   inner_width = zipper_width - 2 * guage;
 
   difference() {
@@ -30,6 +35,9 @@ module zip_clip(length,
       translate([pitch / 2, inner_width / 2 - E, lip])
         grooves(width=guage, depth=guage + E, height=inner_height - lip, pitch=pitch, length=length);
   }
+
+  translate([2, -zipper_width / 2, outer_height])
+    write(str(type, VERSION), h=zipper_width / 2, t=0.5);
 }
 
 module grooves(width,
@@ -71,7 +79,8 @@ module luggage(length=15) {
            zipper_width=6.92,
            guage=1.00,
            pitch=1.68,
-           lip=0.25);
+           lip=0.25,
+           type="L");
 }
 
 module dryer(length=15) {
@@ -82,7 +91,8 @@ module dryer(length=15) {
            zipper_width=5.86,
            guage=0.97,
            pitch=1.57,
-           lip=0.25);
+           lip=0.25,
+           type="D");
 }
 
 module backpack(length=15) {
@@ -93,7 +103,8 @@ module backpack(length=15) {
            zipper_width=7.13,
            guage=1.00,
            pitch=1.70,
-           lip=0.25);
+           lip=0.25,
+           type="B");
 }
 
 //luggage();
