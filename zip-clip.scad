@@ -122,14 +122,19 @@ module step_pitch(steps, pitch) {
 }
 
 module loop(thickness, radius) {
-  rotate(a=90, v=[1, 0, 0])
-  translate([0, radius - thickness / 2, 0])
-  rotate_extrude($fn=100)
-    translate([radius, 0, 0])
-    circle(r=thickness / 2, $fn=100);
+  difference() {
+    rotate(a=90, v=[1, 0, 0])
+    translate([0, radius - thickness / 2, 0])
+    rotate_extrude($fn=30)
+      translate([radius, 0, 0])
+      circle(r=thickness / 2, $fn=30);
 
-  translate([-radius, -(thickness + E) / 2, -(thickness + E)])
-    cube([radius, thickness + 2 * E, thickness + 2 * E]);
+    translate([-2 * radius, -thickness, -(thickness + E)])
+      cube([2 * radius, 2 * thickness, 2 * thickness]);
+
+    translate([-E, -thickness, -thickness-E])
+      cube([2 * radius, 2 * thickness, thickness]);
+    }
 }
 
 module luggage(length=15) {
@@ -223,12 +228,29 @@ module dress(length=30) {
            add_version=false);
 }
 
+module cable(length=20) {
+  zip_clip(length=length,
+           outer_width=8.23,
+           outer_height=3.70,
+           inner_height=2.70,
+           zipper_width=6.23,
+           guage=1.00,
+           pitch=1.70,
+           lip=0.50,
+           locking=false,
+           type="ZipSnap",
+           add_version=false);
+  translate([length / 2, 0, 3.7])
+    rotate(a=90, v=[0, 0, 1])
+      loop(2.5, 4);
+}
+
 // Samples
 //luggage();
 //dryer();
 //backpack();
 //ribbon();
 //toy();
-//loop(2, 5);
-bag();
+//bag();
 //dress();
+cable();
