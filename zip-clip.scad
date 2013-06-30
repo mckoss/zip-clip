@@ -4,6 +4,7 @@
 // June 29, 2013
 
 use <write.scad>
+use <choochoo.scad>
 
 VERSION = "0.4";
 
@@ -49,8 +50,10 @@ module zip_clip(length,
         ridges(width=guage, depth=guage / 3, height=inner_height - lip, pitch=pitch, length=length);
   }
 
-  translate([2, -zipper_width / 2, outer_height])
-    write(str(type, VERSION), h=zipper_width / 2, t=0.5);
+  if (type != "") {
+    translate([2, -zipper_width / 2, outer_height])
+      write(str(type, VERSION), h=zipper_width / 2, t=0.5);
+  }
 }
 
 module tang(width, length, height) {
@@ -166,8 +169,23 @@ module ribbon(length=15) {
            type="R");
 }
 
+module toy(length=20) {
+  zip_clip(length=length,
+           outer_width=9.0,
+           outer_height=3.70,
+           inner_height=2.70,
+           zipper_width=7.13,
+           guage=1.00,
+           pitch=1.70,
+           lip=0.50,
+           locking=false,
+           type="");
+  translate([0, 0, 3.7 - E])
+    choochoo(length=length, width=9.0, height=8);
+}
+
 //luggage();
 //dryer();
 //backpack();
-ribbon();
-//tang(width=10, length=20, height=2);
+//ribbon();
+toy();
