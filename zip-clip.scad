@@ -245,12 +245,12 @@ module cable(length=20) {
       loop(2.5, 4);
 }
 
-// Samples
-//luggage();
-//dryer();
-//backpack();
-//ribbon();
-//toy();
-//bag();
-//dress();
-cable();
+model_name = "toy";
+
+if (model_name == "luggage") luggage();
+if (model_name == "dryer") dryer();
+if (model_name == "backpack") backpack();
+if (model_name == "cable") cable();
+if (model_name == "toy") toy();
+if (model_name == "bag") bag();
+if (model_name == "dress") dress();

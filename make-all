@@ -1,1 +1,5 @@
-openscad -o zip-clip.stl zip-clip.scad
+for name in luggage dryer backpack cable toy bag dress; do
+    echo Rendering model $name
+    openscad -o ${name}.stl -D "model_name = \"$name\"" zip-clip.scad
+done
+zip all-models *.stl
