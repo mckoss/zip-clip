@@ -21,6 +21,7 @@ module zip_clip(length,
                 lip,
                 type="",
                 add_tang=false,
+                add_version=true,
                 locking=true) {
   inner_width = zipper_width - guage;
 
@@ -52,7 +53,7 @@ module zip_clip(length,
 
   if (type != "") {
     translate([2, -zipper_width / 2, outer_height])
-      write(str(type, VERSION), h=zipper_width / 2, t=0.5);
+      write(str(type, add_version ? VERSION: ""), h=zipper_width / 2, t=0.5);
   }
 }
 
@@ -63,7 +64,7 @@ module tang(width, length, height) {
       translate([1, 1, -E])
         cube([length - 4, width - 2, height + 2 * E]);
       translate([-E, width - 2, -E])
-        cube([1 + 2 * E, 1 + 2 * E, 1 + 2 * E]);
+        cube([1 + 2 * E, 1 + 2 * E, height + 2 * E]);
   }
 }
 
@@ -118,6 +119,17 @@ module step_pitch(steps, pitch) {
     translate([i * pitch, 0, 0])
       child(0);
   }
+}
+
+module loop(thickness, radius) {
+  rotate(a=90, v=[1, 0, 0])
+  translate([0, radius - thickness / 2, 0])
+  rotate_extrude($fn=100)
+    translate([radius, 0, 0])
+    circle(r=thickness / 2, $fn=100);
+
+  translate([-radius, -(thickness + E) / 2, -(thickness + E)])
+    cube([radius, thickness + 2 * E, thickness + 2 * E]);
 }
 
 module luggage(length=15) {
@@ -184,8 +196,39 @@ module toy(length=20) {
     choochoo(length=length, width=9.0, height=8);
 }
 
+module bag(length=20) {
+  zip_clip(length=length,
+           outer_width=7.81,
+           outer_height=3.60,
+           inner_height=2.6,
+           zipper_width=6.31,
+           guage=1.0,
+           pitch=1.53,
+           lip=0.50,
+           type="ZipSnap",
+           add_version=false);
+}
+
+module dress(length=30) {
+  zip_clip(length=length,
+           outer_width=7.9,
+           outer_height=4.4,
+           inner_height=2.9,
+           zipper_width=5.9,
+           guage=1.1,
+           pitch=2.3,
+           lip=0.50,
+           add_tang=true,
+           type="Michael Koss",
+           add_version=false);
+}
+
+// Samples
 //luggage();
 //dryer();
 //backpack();
 //ribbon();
-toy();
+//toy();
+//loop(2, 5);
+bag();
+//dress();
