@@ -19,7 +19,8 @@ module zip_clip(length,
                 pitch,
                 lip,
                 type="",
-                add_tang=false) {
+                add_tang=false,
+                locking=true) {
   inner_width = zipper_width - guage;
 
   difference() {
@@ -39,12 +40,14 @@ module zip_clip(length,
     tang(width=outer_width, length=length / 2, height=outer_height - inner_height);
   }
 
-  translate([0, zipper_width / 2 + E, lip])
-    ridges(width=guage, depth=guage / 3, height=inner_height - lip, pitch=pitch, length=length);
-
-  mirror([0, 1, 0])
-    translate([pitch / 2, zipper_width / 2 + E, lip])
+  if (locking) {
+    translate([0, zipper_width / 2 + E, lip])
       ridges(width=guage, depth=guage / 3, height=inner_height - lip, pitch=pitch, length=length);
+
+    mirror([0, 1, 0])
+      translate([pitch / 2, zipper_width / 2 + E, lip])
+        ridges(width=guage, depth=guage / 3, height=inner_height - lip, pitch=pitch, length=length);
+  }
 
   translate([2, -zipper_width / 2, outer_height])
     write(str(type, VERSION), h=zipper_width / 2, t=0.5);
